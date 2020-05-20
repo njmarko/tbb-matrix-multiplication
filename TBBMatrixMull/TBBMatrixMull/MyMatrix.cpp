@@ -24,24 +24,36 @@ bool MyMatrix::load_data(string filename)
 	stringstream ss;
 	string line;
 	
-	int val; //value that is being read
+	int val; // value that is being read
 	rows = 0;
+	char ch;
 	while (getline(fin,line)) {
-		++rows;
 		ss << line;
 		vector<int> temp;
 		while (!ss.eof()) {
 			ss >> val;
+			if (ss.fail()) { // if something other than int is encountered or the row is empty
+				if(!ss.eof()) // if the row is not empty, then it is an invalid input
+					throw MyMatrix::InvalidData(filename);
+				else { // in case the row is empty just skip it
+					break;
+				}
+			}
 			temp.push_back(val);
 		}
 		ss.clear();
-		if (rows == 1) cols = temp.size(); // first row column count defines how many columns are in a matrix
+
+		if (temp.size() == 0) { // allows for skipping of empty rows either in the begining, the middle or at the end
+			continue;
+		}
+		++rows;
+		if (rows == 1) cols = temp.size(); // first nonempty row column count defines how many columns are in a matrix
 		if (cols == temp.size()) {
 			m.push_back(temp);
 		}
 		else
 		{
-			//throw exception
+			throw MyMatrix::InvalidData(filename);
 		}
 	}
 	return true;
@@ -70,7 +82,7 @@ MyMatrix& MyMatrix::operator=(const MyMatrix & m2)
 MyMatrix operator*(const MyMatrix & m1, const MyMatrix & m2)
 {
 	if (m1.cols != m2.rows) {
-		//throw exception
+		throw MyMatrix::IncompatibleDimensions();
 	}
 	MyMatrix ret_val(m1.rows, m2.cols);
 	for (size_t i = 0; i < m1.rows; ++i)
