@@ -29,15 +29,16 @@ int mullSerial(int argc, char * argv[])
 		m2.print_matrix();
 
 		MyMatrix m3;
+		tick_count t1 = tick_count::now();
 		m3 = m1*m2;
+		tick_count t2 = tick_count::now();
+		cout << "Vreme izvrsavanja serijskog algoritma mnozenja: " << (t2 - t1).seconds() * 1000 << "ms.\n";
 		m3.print_matrix();
 	}
 	catch (const MyMatrix::MatrixException&e)
 	{
 		std::cout << e.what() << endl;
 	}
-	
 
-	
 	return 0;
 }

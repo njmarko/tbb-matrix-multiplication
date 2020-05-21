@@ -64,8 +64,24 @@ void MyMatrix::print_matrix()
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 	for (size_t i = 0; i < rows; i++)
 	{
-		for (size_t j = 0; j < cols; j++)
-			cout << m[i][j] << " ";
+
+		if (i == 0) { // write the column numbers
+			cout << string(5,' ');
+			for (size_t j = 0; j < cols; j++)
+			{
+				cout.width(10);
+				if (i == 0) cout << j + 1 << ".";
+			}
+			cout << endl << string(12 * cols, '_') << endl;;
+		}
+
+		cout.width(4);
+		cout << std::right << i + 1 << ".|"; // write row numbers
+
+		for (size_t j = 0; j < cols; j++) {
+			cout.width(10);
+			cout << std::right << m[i][j] << " ";
+		}
 		cout << endl;
 	}
 	cout << endl;

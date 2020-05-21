@@ -9,8 +9,9 @@ Date: 5/11/2020
 
 int main(int argc, char* argv[]) {
 
+	std::cout << "Serial matrix multiplication\n";
 	mullSerial(argc,argv);
-	std::cout << "Hello World serial!\n";
+
 
 	return 0;
 }
