@@ -5,15 +5,15 @@ Date: 5/26/2020
 */
 
 #include <iostream>
-#include "MainProgram.h"
+#include "MainParallelProgram.h"
 #include <fstream>
 #include <string>
 #include <thread>
 
 int main(int argc, char* argv[]) {
 
-	std::cout << "Serial matrix multiplication\n";
-	mullSerial(argc,argv);
+	std::cout << "Parallel matrix multiplication\n";
+	mullParallel(argc, argv);
 
 
 	return 0;

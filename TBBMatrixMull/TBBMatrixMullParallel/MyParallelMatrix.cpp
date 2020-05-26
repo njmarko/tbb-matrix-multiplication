@@ -1,18 +1,19 @@
-#include "MyMatrix.h"
+#include "MyParallelMatrix.h"
 
-MyMatrix::MyMatrix() :rows(0),cols(0), m(0, vector<int>(0))
+
+MyParallelMatrix::MyParallelMatrix() :rows(0), cols(0), m(0, vector<int>(0))
 {
 }
 
-MyMatrix::MyMatrix(unsigned int _rows, unsigned int _cols): rows(_rows),cols(_cols), m(_rows, vector<int>(_cols, 0))
+MyParallelMatrix::MyParallelMatrix(unsigned int _rows, unsigned int _cols) : rows(_rows), cols(_cols), m(_rows, vector<int>(_cols, 0))
 {
 }
 
-MyMatrix::MyMatrix(MyMatrix & m1): rows(m1.rows), cols(m1.cols), m(m1.m)
+MyParallelMatrix::MyParallelMatrix(MyParallelMatrix & m1) : rows(m1.rows), cols(m1.cols), m(m1.m)
 {
 }
 
-bool MyMatrix::load_data(string filename)
+bool MyParallelMatrix::load_data(string filename)
 {
 	ifstream fin;
 	fin.open(filename);
@@ -23,18 +24,18 @@ bool MyMatrix::load_data(string filename)
 	}
 	stringstream ss;
 	string line;
-	
+
 	int val; // value that is being read
 	rows = 0;
 	char ch;
-	while (getline(fin,line)) {
+	while (getline(fin, line)) {
 		ss << line;
 		vector<int> temp;
 		while (!ss.eof()) {
 			ss >> val;
 			if (ss.fail()) { // if something other than int is encountered or the row is empty
-				if(!ss.eof()) // if the row is not empty, then it is an invalid input
-					throw MyMatrix::InvalidData(filename);
+				if (!ss.eof()) // if the row is not empty, then it is an invalid input
+					throw MyParallelMatrix::InvalidData(filename);
 				else { // in case the row is empty just skip it
 					break;
 				}
@@ -53,21 +54,21 @@ bool MyMatrix::load_data(string filename)
 		}
 		else
 		{
-			throw MyMatrix::InvalidData(filename);
+			throw MyParallelMatrix::InvalidData(filename);
 		}
 	}
 	return true;
 }
 
-void MyMatrix::print_matrix()
+void MyParallelMatrix::print_matrix()
 {
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 
-	for(size_t i = 0; i < rows; i++)
+	for (size_t i = 0; i < rows; i++)
 	{
 
 		if (i == 0) { // write the column numbers
-			cout << string(5,' ');
+			cout << string(5, ' ');
 			for (size_t j = 0; j < cols; j++)
 			{
 				cout.width(10);
@@ -88,7 +89,17 @@ void MyMatrix::print_matrix()
 	cout << endl;
 }
 
-MyMatrix& MyMatrix::operator=(const MyMatrix & m2)
+unsigned int MyParallelMatrix::getRowSize()
+{
+	return rows;
+}
+
+unsigned int MyParallelMatrix::getColSize()
+{
+	return cols;
+}
+
+MyParallelMatrix& MyParallelMatrix::operator=(const MyParallelMatrix & m2)
 {
 	rows = m2.rows;
 	cols = m2.cols;
@@ -96,12 +107,18 @@ MyMatrix& MyMatrix::operator=(const MyMatrix & m2)
 	return *this;
 }
 
-MyMatrix operator*(const MyMatrix & m1, const MyMatrix & m2)
+std::vector<std::vector<int>>& MyParallelMatrix::getData()
+{
+	return m;
+}
+
+
+MyParallelMatrix operator*(const MyParallelMatrix & m1, const MyParallelMatrix & m2)
 {
 	if (m1.cols != m2.rows) {
-		throw MyMatrix::IncompatibleDimensions();
+		throw MyParallelMatrix::IncompatibleDimensions();
 	}
-	MyMatrix ret_val(m1.rows, m2.cols);
+	MyParallelMatrix ret_val(m1.rows, m2.cols);
 	for (size_t i = 0; i < m1.rows; ++i)
 	{
 		for (size_t j = 0; j < m2.cols; ++j) {
@@ -113,3 +130,4 @@ MyMatrix operator*(const MyMatrix & m1, const MyMatrix & m2)
 	}
 	return ret_val;
 }
+

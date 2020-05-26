@@ -143,13 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\TBBMatrixMull\main.cpp" />
-    <ClCompile Include="..\TBBMatrixMull\MainProgram.cpp" />
-    <ClCompile Include="..\TBBMatrixMull\MyMatrix.cpp" />
+    <ClCompile Include="MainParallelProgram.cpp" />
+    <ClCompile Include="MullTask.cpp" />
+    <ClCompile Include="MyParallelMatrix.cpp" />
+    <ClCompile Include="ppmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\TBBMatrixMull\MainProgram.h" />
-    <ClInclude Include="..\TBBMatrixMull\MyMatrix.h" />
+    <ClInclude Include="MainParallelProgram.h" />
+    <ClInclude Include="MullTask.h" />
+    <ClInclude Include="MyParallelMatrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

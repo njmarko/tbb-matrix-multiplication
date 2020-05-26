@@ -13,31 +13,34 @@ Date: 5/17/2020
 #include <tbb\parallel_for.h>
 #include <tbb\task.h>
 
+
 using namespace std;
 using namespace tbb;
+
+typedef std::vector<std::vector<int>> Matrix;
 
 /*
 * Class that represents a matrix by using a two dimensional vector and implements methods for loading the data,
 * printing the data and other basic functionalities like addition, multiplication...
 */
-class MyMatrix {
+class MyParallelMatrix {
 
 public:
 	/*Default constructor*/
-	MyMatrix();
+	MyParallelMatrix();
 
 	/*
 	* Constructor that takes matrix dimensions and initializes the matrix with zeroes
 	* @param number of rows
 	* @param number of columns
 	*/
-	MyMatrix(unsigned int _rows, unsigned int _cols);
+	MyParallelMatrix(unsigned int _rows, unsigned int _cols);
 
 	/*
 	* Copy constructor that copies matrix data and rows and column sizes
 	* @param Matrix that is being copied
 	*/
-	MyMatrix(MyMatrix& m1);
+	MyParallelMatrix(MyParallelMatrix& m1);
 
 	/*
 	* Load matrix from the file. Matrix dimensions can vary
@@ -52,6 +55,12 @@ public:
 	*/
 	void print_matrix();
 
+
+	unsigned int getRowSize();
+
+	unsigned int getColSize();
+
+
 	/*
 	* Serially multiply 2 matrices and return the resulting matrix
 	* @param left side matrix whose dimensions are r1xc1
@@ -59,14 +68,17 @@ public:
 	* @returns matrix whose dimensions are c1xr2
 	* @throws MyMatrix::IncompatibleDimensions thrown if inner matrix dimensions are not compatible
 	*/
-	friend MyMatrix operator*(const MyMatrix& m1, const MyMatrix& m2);
+	friend MyParallelMatrix operator*(const MyParallelMatrix& m1, const MyParallelMatrix& m2);
 
 	/*
 	* Asignment operator that copies data and matrix size
 	* @param matrix that is being copied
 	* @returns reference to this matrix
 	*/
-	MyMatrix& operator=(const MyMatrix& m2);
+	MyParallelMatrix& operator=(const MyParallelMatrix& m2);
+
+
+	std::vector<std::vector<int>>& getData();
 
 	/*
 	* An exception that inherits runtime_error and is a parent class to other matrix exceptions
@@ -103,7 +115,7 @@ private:
 	/*
 	* A two dimensional vector of ints that holds the matrix data
 	*/
-	std::vector<std::vector<int>> m;
+	Matrix m;
 
 	/*
 	* Number of rows in the matrix

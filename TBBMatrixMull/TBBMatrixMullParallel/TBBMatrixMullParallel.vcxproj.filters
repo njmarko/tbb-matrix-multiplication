@@ -15,21 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\TBBMatrixMull\main.cpp">
+    <ClCompile Include="MullTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\TBBMatrixMull\MainProgram.cpp">
+    <ClCompile Include="ppmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\TBBMatrixMull\MyMatrix.cpp">
+    <ClCompile Include="MyParallelMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainParallelProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\TBBMatrixMull\MyMatrix.h">
+    <ClInclude Include="MullTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\TBBMatrixMull\MainProgram.h">
+    <ClInclude Include="MyParallelMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainParallelProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
