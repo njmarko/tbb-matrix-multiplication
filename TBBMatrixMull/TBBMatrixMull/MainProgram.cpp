@@ -1,6 +1,8 @@
 #include "MainProgram.h"
 #include "MyMatrix.h"
 
+
+
 int mullSerial(int argc, char * argv[])
 {
 	char* inFilename1;
@@ -18,24 +20,27 @@ int mullSerial(int argc, char * argv[])
 	try
 	{
 		MyMatrix m1;
-		//m1.print_matrix();
+		int rows_m1 = 0;
+		int cols_m1 = 0;
 
-		m1.load_data(inFilename1);
+		load_data(inFilename1, m1, rows_m1,cols_m1);
 
-		//m1.print_matrix();
+		//print_matrix(m1,rows_m1,cols_m1);
 
 		MyMatrix m2;
-		m2.load_data(inFilename2);
-		//m2.print_matrix();
+		int rows_m2 = 0;
+		int cols_m2 = 0;
+		load_data(inFilename2,m2,rows_m2,cols_m2);
+		//print_matrix(m2, rows_m2, cols_m2);
 
-		MyMatrix m3;
+		MyMatrix m3(rows_m1*cols_m2,0);
 		tick_count t1 = tick_count::now();
-		m3 = m1*m2;
+		multiply_serial(m1,m2,m3,rows_m1,cols_m1,rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
 		cout << "Vreme izvrsavanja serijskog algoritma mnozenja: " << (t2 - t1).seconds() * 1000 << "ms.\n";
-		//m3.print_matrix();
+		//print_matrix(m3, rows_m1, cols_m2);
 	}
-	catch (const MyMatrix::MatrixException&e)
+	catch (const MatrixException&e)
 	{
 		std::cout << e.what() << endl;
 	}

@@ -1,40 +1,29 @@
 #include "MyMatrix.h"
 
-MyMatrix::MyMatrix() :rows(0),cols(0), m(0, vector<int>(0))
-{
-}
 
-MyMatrix::MyMatrix(unsigned int _rows, unsigned int _cols): rows(_rows),cols(_cols), m(_rows, vector<int>(_cols, 0))
-{
-}
 
-MyMatrix::MyMatrix(MyMatrix & m1): rows(m1.rows), cols(m1.cols), m(m1.m)
+bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 {
-}
-
-bool MyMatrix::load_data(string filename)
-{
-	ifstream fin;
+	std::ifstream fin;
 	fin.open(filename);
 	if (!fin.is_open())
 	{
 		std::cout << "File cannot be opened\n";
 		return false;
 	}
-	stringstream ss;
-	string line;
+	std::stringstream ss;
+	std::string line;
 	
 	int val; // value that is being read
 	rows = 0;
-	char ch;
 	while (getline(fin,line)) {
 		ss << line;
-		vector<int> temp;
+		std::vector<int> temp;
 		while (!ss.eof()) {
 			ss >> val;
 			if (ss.fail()) { // if something other than int is encountered or the row is empty
 				if(!ss.eof()) // if the row is not empty, then it is an invalid input
-					throw MyMatrix::InvalidData(filename);
+					throw InvalidData(filename);
 				else { // in case the row is empty just skip it
 					break;
 				}
@@ -47,19 +36,19 @@ bool MyMatrix::load_data(string filename)
 			continue;
 		}
 		++rows;
-		if (rows == 1) cols = temp.size(); // first nonempty row column count defines how many columns are in a matrix
+		if (rows == 1) cols = (int)temp.size(); // first nonempty row column count defines how many columns are in a matrix
 		if (cols == temp.size()) {
-			m.push_back(temp);
+			m.insert(m.end(),temp.cbegin(),temp.cend());
 		}
 		else
 		{
-			throw MyMatrix::InvalidData(filename);
+			throw InvalidData(filename);
 		}
 	}
 	return true;
 }
 
-void MyMatrix::print_matrix()
+void print_matrix(const MyMatrix& m, const int rows, const int cols)
 {
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 
@@ -73,7 +62,7 @@ void MyMatrix::print_matrix()
 				cout.width(10);
 				if (i == 0) cout << j + 1 << ".";
 			}
-			cout << endl << string(12 * cols, '_') << endl;;
+			cout << endl << string(6 + 11 * cols, '_') << endl;;
 		}
 
 		cout.width(4);
@@ -81,35 +70,52 @@ void MyMatrix::print_matrix()
 
 		for (size_t j = 0; j < cols; j++) {
 			cout.width(10);
-			cout << std::right << m[i][j] << " ";
+			cout << std::right << m[i*cols + j] << " ";
 		}
 		cout << endl;
 	}
 	cout << endl;
 }
+// 2D matrix
+// 1 1     4 4 4     9 9 9
+// 2 2     5 5 5    18 18 18
+// 3 3              27 27 27
 
-MyMatrix& MyMatrix::operator=(const MyMatrix & m2)
-{
-	rows = m2.rows;
-	cols = m2.cols;
-	m = m2.m;
-	return *this;
-}
+// 1D matrix
+// 1 1 2 2 3 3					 3x2
+// 4 4 4 5 5 5					 2x3
+// 9 9 9 18 18 18 27 27 27		 3x3
 
-MyMatrix operator*(const MyMatrix & m1, const MyMatrix & m2)
+void multiply_serial(const MyMatrix & m1,const  MyMatrix & m2,  MyMatrix& m3,const int rows_m1,const int cols_m1,const int rows_m2,const int cols_m2)
 {
-	if (m1.cols != m2.rows) {
-		throw MyMatrix::IncompatibleDimensions();
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
 	}
-	MyMatrix ret_val(m1.rows, m2.cols);
-	for (size_t i = 0; i < m1.rows; ++i)
+
+	for (size_t i = 0; i < rows_m1; ++i)
 	{
-		for (size_t j = 0; j < m2.cols; ++j) {
-			for (size_t k = 0; k < m1.cols; ++k)
+		for (size_t j = 0; j < cols_m2; ++j) {
+			for (size_t k = 0; k < cols_m1; ++k)
 			{
-				ret_val.m[i][j] += m1.m[i][k] * m2.m[k][j];
+				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2[k*cols_m2 + j];
 			}
 		}
 	}
-	return ret_val;
+}
+
+void multiply_serial_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+
+	for (size_t i = 0; i < rows_m1; ++i)
+	{
+		for (size_t j = 0; j < cols_m2; ++j) {
+			for (size_t k = 0; k < cols_m1; ++k)
+			{
+				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2[k*cols_m2 + j];
+			}
+		}
+	}
 }

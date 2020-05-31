@@ -34,7 +34,7 @@ int mullParallel(int argc, char * argv[])
 		MullTask& task = *new(task::allocate_root()) MullTask(m1, m2, m3);
 		task::spawn_root_and_wait(task);
 		tick_count t2 = tick_count::now();
-		m3->print_matrix();
+		//m3->print_matrix();
 		cout << "Vreme izvrsavanja paralelnog algoritma mnozenja: " << (t2 - t1).seconds() * 1000 << "ms.\n";
 		
 	}
