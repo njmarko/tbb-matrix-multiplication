@@ -37,8 +37,8 @@ public:
 	void operator()(const tbb::blocked_range<int>&r)const {
 		for (int i = r.begin(); i != r.end(); ++i)
 		{
-			for (size_t j = 0; j < cols_m2; ++j) {
-				for (size_t k = 0; k < cols_m1; ++k) {
+			for (int j = 0; j < cols_m2; ++j) {
+				for (int k = 0; k < cols_m1; ++k) {
 					m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2[k*cols_m2 + j];
 				}
 			}
@@ -93,11 +93,11 @@ class PPMatrixMull3D {
 	MyMatrix& m3;
 	const int rows_m1, cols_m1, rows_m2, cols_m2;
 public:
-	void operator()(const tbb::blocked_range<int>&r)const {
-		for (int i = r.begin(); i != r.end(); ++i)
+	void operator()(const tbb::blocked_range3d<int>&r)const {
+		for (int i = r.pages().begin(); i != r.pages().end(); ++i)
 		{
-			for (size_t j = 0; j < cols_m2; ++j) {
-				for (size_t k = 0; k < cols_m1; ++k) {
+			for (int j = r.rows().begin(); j != r.rows().end(); ++j) {
+				for (int k = r.cols().begin(); k != r.cols().end(); ++k) {
 					m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2[k*cols_m2 + j];
 				}
 			}

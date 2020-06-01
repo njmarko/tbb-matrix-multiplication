@@ -37,7 +37,7 @@ int mullParallel(int argc, char * argv[])
 
 		MyMatrix m3(rows_m1*cols_m2, 0);
 		tick_count t1 = tick_count::now();
-		multiply_parallel_rows_cols(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
+		multiply_parallel_3D(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
 		cout << "Time taken for serial multiplication: " << (t2 - t1).seconds() * 1000 << "ms.\n";
 		if (rows_m1 < 10 && cols_m2 < 10)
