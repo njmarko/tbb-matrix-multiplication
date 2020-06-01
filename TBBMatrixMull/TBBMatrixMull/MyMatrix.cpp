@@ -103,19 +103,56 @@ void multiply_serial(const MyMatrix & m1,const  MyMatrix & m2,  MyMatrix& m3,con
 	}
 }
 
+void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols) {
+	for (int i = 0; i < cols; ++i)
+	{
+		for (int j = 0; j < rows; ++j) {
+			dst[j + i*rows] = src[i + j*cols];
+		}
+	}
+}
+
 void multiply_serial_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
 		throw IncompatibleDimensions();
 	}
+	MyMatrix m2_transposed(rows_m2*cols_m2);
+	transpose(m2,m2_transposed,rows_m2,cols_m2);
+	//print_matrix(m2_transposed, cols_m2, rows_m2);
 
 	for (size_t i = 0; i < rows_m1; ++i)
 	{
 		for (size_t j = 0; j < cols_m2; ++j) {
 			for (size_t k = 0; k < cols_m1; ++k)
 			{
-				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2[k*cols_m2 + j];
+				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2_transposed[j*cols_m1 + k];
 			}
+		}
+	}
+}
+
+// 1D matrix
+// 1 1 2 2 3 3					 3x2
+// 4 5 4 5 4 5					 3x2 transposed
+
+void mull_serial_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+	MyMatrix m2_transposed(rows_m2*cols_m2);
+	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	//print_matrix(m2_transposed, cols_m2, rows_m2);
+
+	for (size_t i = 0; i < rows_m1; ++i)
+	{
+		for (size_t j = 0; j < cols_m2; ++j) {
+			MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
+			MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i+1)*cols_m1;
+			MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
+
+			m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg,0);
 		}
 	}
 }
