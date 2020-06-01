@@ -153,6 +153,28 @@ public:
 	{}
 };
 
+class PPMatrixMullTransposedInnerProduct {
+	const MyMatrix& m1, m2_transposed;
+	MyMatrix& m3;
+	const int rows_m1, cols_m1, rows_m2, cols_m2;
+public:
+	void operator()(const tbb::blocked_range<int>&r)const {
+		for (int i = r.begin(); i != r.end(); ++i)
+		{
+			for (size_t j = 0; j < cols_m2; ++j) {
+				MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
+				MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i + 1)*cols_m1;
+				MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
+				m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg, 0);
+			}
+		}
+	}
+	PPMatrixMullTransposedInnerProduct(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3,
+		const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2)
+		:m1(_m1), m2_transposed(_m2), m3(_m3), rows_m1(_rows_m1), cols_m1(_cols_m1), rows_m2(_rows_m2), cols_m2(_cols_m2)
+	{}
+};
+
 class PPMatrixMullTransposedInnerProduct2D {
 	const MyMatrix& m1, m2_transposed;
 	MyMatrix& m3;
@@ -189,6 +211,8 @@ void multiply_parallel_3D(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3
 void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
+
+void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
