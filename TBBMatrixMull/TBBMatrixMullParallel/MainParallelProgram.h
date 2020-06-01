@@ -9,6 +9,7 @@ Date: 5/17/2020
 #include <tbb\tick_count.h>
 #include "MyParallelMatrix.h"
 #include "MullTask.h"
+#include <numeric>
 
 using namespace std;
 using namespace tbb;

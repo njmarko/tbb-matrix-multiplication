@@ -15,6 +15,7 @@ Date: 5/17/2020
 #include <tbb\task.h>
 #include <algorithm>
 #include <numeric>
+#include <thread>
 
 using namespace std;
 using namespace tbb;
@@ -23,6 +24,7 @@ using namespace tbb;
 * Represents 1D matrix
 */
 typedef std::vector<int> MyMatrix;
+//typedef concurrent_vector<int> MyMatrix;
 
 class PPMatrixMull;
 class PPMatrixMullColls;

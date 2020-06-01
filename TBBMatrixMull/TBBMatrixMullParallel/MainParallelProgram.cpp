@@ -17,6 +17,7 @@ int mullParallel(int argc, char * argv[])
 
 	try
 	{
+		
 		MyMatrix m1;
 		int rows_m1 = 0;
 		int cols_m1 = 0;
@@ -37,7 +38,7 @@ int mullParallel(int argc, char * argv[])
 
 		MyMatrix m3(rows_m1*cols_m2, 0);
 		tick_count t1 = tick_count::now();
-		mull_parallel_transp_inner_prod(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
+		mull_parallel_transp_inner_prod_2d(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
 		cout << "Time taken for parallel multiplication: " << (t2 - t1).seconds() * 1000 << "ms.\n";
 		if (rows_m1 < 10 && cols_m2 < 10)
