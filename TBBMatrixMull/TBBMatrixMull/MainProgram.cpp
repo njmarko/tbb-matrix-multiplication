@@ -41,7 +41,7 @@ int mullSerial(int argc, char * argv[])
 		tick_count t1 = tick_count::now();
 		mull_serial_transp_inner_prod(m1,m2,m3,rows_m1,cols_m1,rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
-		cout << "Vreme izvrsavanja serijskog algoritma mnozenja: " << (t2 - t1).seconds() * 1000 << "ms.\n";
+		cout << "Time taken for serial multiplication: " << (t2 - t1).seconds() * 1000 << "ms.\n";
 		if (rows_m1 < 10 && cols_m2 < 10)
 			print_matrix(m3, rows_m1, cols_m2);
 	}

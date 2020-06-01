@@ -1,41 +1,29 @@
 #include "MyParallelMatrix.h"
 
 
-MyParallelMatrix::MyParallelMatrix() :rows(0), cols(0), m(0, vector<int>(0))
-{
-}
 
-MyParallelMatrix::MyParallelMatrix(unsigned int _rows, unsigned int _cols) : rows(_rows), cols(_cols), m(_rows, vector<int>(_cols, 0))
+bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 {
-}
-
-MyParallelMatrix::MyParallelMatrix(MyParallelMatrix & m1) : rows(m1.rows), cols(m1.cols), m(m1.m)
-{
-}
-
-bool MyParallelMatrix::load_data(string filename)
-{
-	ifstream fin;
+	std::ifstream fin;
 	fin.open(filename);
 	if (!fin.is_open())
 	{
 		std::cout << "File cannot be opened\n";
 		return false;
 	}
-	stringstream ss;
-	string line;
+	std::stringstream ss;
+	std::string line;
 
 	int val; // value that is being read
 	rows = 0;
-	char ch;
 	while (getline(fin, line)) {
 		ss << line;
-		vector<int> temp;
+		std::vector<int> temp;
 		while (!ss.eof()) {
 			ss >> val;
 			if (ss.fail()) { // if something other than int is encountered or the row is empty
 				if (!ss.eof()) // if the row is not empty, then it is an invalid input
-					throw MyParallelMatrix::InvalidData(filename);
+					throw InvalidData(filename);
 				else { // in case the row is empty just skip it
 					break;
 				}
@@ -48,19 +36,19 @@ bool MyParallelMatrix::load_data(string filename)
 			continue;
 		}
 		++rows;
-		if (rows == 1) cols = temp.size(); // first nonempty row column count defines how many columns are in a matrix
+		if (rows == 1) cols = (int)temp.size(); // first nonempty row column count defines how many columns are in a matrix
 		if (cols == temp.size()) {
-			m.push_back(temp);
+			m.insert(m.end(), temp.cbegin(), temp.cend());
 		}
 		else
 		{
-			throw MyParallelMatrix::InvalidData(filename);
+			throw InvalidData(filename);
 		}
 	}
 	return true;
 }
 
-void MyParallelMatrix::print_matrix()
+void print_matrix(const MyMatrix& m, const int rows, const int cols)
 {
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 
@@ -74,7 +62,7 @@ void MyParallelMatrix::print_matrix()
 				cout.width(10);
 				if (i == 0) cout << j + 1 << ".";
 			}
-			cout << endl << string(12 * cols, '_') << endl;;
+			cout << endl << string(6 + 11 * cols, '_') << endl;;
 		}
 
 		cout.width(4);
@@ -82,52 +70,103 @@ void MyParallelMatrix::print_matrix()
 
 		for (size_t j = 0; j < cols; j++) {
 			cout.width(10);
-			cout << std::right << m[i][j] << " ";
+			cout << std::right << m[i*cols + j] << " ";
 		}
 		cout << endl;
 	}
 	cout << endl;
 }
+// 2D matrix
+// 1 1     4 4 4     9 9 9
+// 2 2     5 5 5    18 18 18
+// 3 3              27 27 27
 
-unsigned int MyParallelMatrix::getRowSize()
+// 1D matrix
+// 1 1 2 2 3 3					 3x2
+// 4 4 4 5 5 5					 2x3
+// 9 9 9 18 18 18 27 27 27		 3x3
+
+void multiply_parallel(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
+	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
-	return rows;
-}
-
-unsigned int MyParallelMatrix::getColSize()
-{
-	return cols;
-}
-
-MyParallelMatrix& MyParallelMatrix::operator=(const MyParallelMatrix & m2)
-{
-	rows = m2.rows;
-	cols = m2.cols;
-	m = m2.m;
-	return *this;
-}
-
-std::vector<std::vector<int>>& MyParallelMatrix::getData()
-{
-	return m;
-}
-
-
-MyParallelMatrix operator*(const MyParallelMatrix & m1, const MyParallelMatrix & m2)
-{
-	if (m1.cols != m2.rows) {
-		throw MyParallelMatrix::IncompatibleDimensions();
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
 	}
-	MyParallelMatrix ret_val(m1.rows, m2.cols);
-	for (size_t i = 0; i < m1.rows; ++i)
+
+	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMull(m1,m2,m3,rows_m1,cols_m1,rows_m2,cols_m2));
+}
+
+void multiply_parallel_rows_cols(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
+	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+
+	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMullRows(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2));
+}
+
+void multiply_parallel_3D(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+
+	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMull(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2));
+}
+
+void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols) {
+	for (int i = 0; i < cols; ++i)
 	{
-		for (size_t j = 0; j < m2.cols; ++j) {
-			for (size_t k = 0; k < m1.cols; ++k)
+		for (int j = 0; j < rows; ++j) {
+			dst[j + i*rows] = src[i + j*cols];
+		}
+	}
+}
+
+void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3,
+	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+	MyMatrix m2_transposed(rows_m2*cols_m2);
+	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	//print_matrix(m2_transposed, cols_m2, rows_m2);
+
+	for (size_t i = 0; i < rows_m1; ++i)
+	{
+		for (size_t j = 0; j < cols_m2; ++j) {
+			for (size_t k = 0; k < cols_m1; ++k)
 			{
-				ret_val.m[i][j] += m1.m[i][k] * m2.m[k][j];
+				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2_transposed[j*cols_m1 + k];
 			}
 		}
 	}
-	return ret_val;
 }
 
+// 1D matrix
+// 1 1 2 2 3 3					 3x2
+// 4 5 4 5 4 5					 3x2 transposed
+
+void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3,
+	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
+	}
+	MyMatrix m2_transposed(rows_m2*cols_m2);
+	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	//print_matrix(m2_transposed, cols_m2, rows_m2);
+
+	for (size_t i = 0; i < rows_m1; ++i)
+	{
+		for (size_t j = 0; j < cols_m2; ++j) {
+			MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
+			MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i + 1)*cols_m1;
+			MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
+
+			m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg, 0);
+		}
+	}
+}

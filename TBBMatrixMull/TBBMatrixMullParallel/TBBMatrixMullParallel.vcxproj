@@ -147,7 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainParallelProgram.cpp" />
-    <ClCompile Include="MullTask.cpp" />
     <ClCompile Include="MyParallelMatrix.cpp" />
     <ClCompile Include="ppmain.cpp" />
   </ItemGroup>

@@ -17,28 +17,33 @@ int mullParallel(int argc, char * argv[])
 
 	try
 	{
-		MyParallelMatrix* m1 = new MyParallelMatrix();
+		MyMatrix m1;
+		int rows_m1 = 0;
+		int cols_m1 = 0;
+
+		load_data(inFilename1, m1, rows_m1, cols_m1);
+
+		if (rows_m1 < 10 && cols_m1 < 10)
+			print_matrix(m1, rows_m1, cols_m1);
+
+		MyMatrix m2;
+		int rows_m2 = 0;
+		int cols_m2 = 0;
+		load_data(inFilename2, m2, rows_m2, cols_m2);
+		if (rows_m2 < 10 && cols_m2 < 10)
+			print_matrix(m2, rows_m2, cols_m2);
 
 
-		m1->load_data(inFilename1);
-		//m1.print_matrix();
-		//m1.print_matrix();
 
-		MyParallelMatrix* m2 = new MyParallelMatrix();
-		m2->load_data(inFilename2);
-		//m2->print_matrix();
-
-		MyParallelMatrix* m3 = new MyParallelMatrix(m1->getRowSize(),m2->getColSize());
-
+		MyMatrix m3(rows_m1*cols_m2, 0);
 		tick_count t1 = tick_count::now();
-		MullTask& task = *new(task::allocate_root()) MullTask(m1, m2, m3);
-		task::spawn_root_and_wait(task);
+		multiply_parallel_rows_cols(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
-		//m3->print_matrix();
-		cout << "Vreme izvrsavanja paralelnog algoritma mnozenja: " << (t2 - t1).seconds() * 1000 << "ms.\n";
-		
+		cout << "Time taken for serial multiplication: " << (t2 - t1).seconds() * 1000 << "ms.\n";
+		if (rows_m1 < 10 && cols_m2 < 10)
+			print_matrix(m3, rows_m1, cols_m2);
 	}
-	catch (const MyParallelMatrix::MatrixException&e)
+	catch (const MatrixException&e)
 	{
 		std::cout << e.what() << endl;
 	}
