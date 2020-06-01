@@ -134,15 +134,19 @@ void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMa
 	transpose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
 
-	for (size_t i = 0; i < rows_m1; ++i)
-	{
-		for (size_t j = 0; j < cols_m2; ++j) {
-			for (size_t k = 0; k < cols_m1; ++k)
-			{
-				m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2_transposed[j*cols_m1 + k];
-			}
-		}
+	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMullTransposed(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
+}
+
+void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3,
+	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
+{
+	if (cols_m1 != rows_m2) {
+		throw IncompatibleDimensions();
 	}
+	MyMatrix m2_transposed(rows_m2*cols_m2);
+	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	//print_matrix(m2_transposed, cols_m2, rows_m2);
+	tbb::parallel_for(blocked_range3d<int>(0, rows_m1, 0, cols_m2, 0, cols_m1), PPMatrixMullTransposed3D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
 }
 
 // 1D matrix
