@@ -96,7 +96,7 @@ void multiply_parallel(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
 	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMull(m1,m2,m3,rows_m1,cols_m1,rows_m2,cols_m2));
 }
 
-void multiply_parallel_rows_cols(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
+void multiply_parallel_nested(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
@@ -153,7 +153,7 @@ void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, M
 // 1 1 2 2 3 3					 3x2
 // 4 5 4 5 4 5					 3x2 transposed
 
-void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3,
+void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3,
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
@@ -162,15 +162,5 @@ void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, M
 	MyMatrix m2_transposed(rows_m2*cols_m2);
 	transpose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
-
-	for (size_t i = 0; i < rows_m1; ++i)
-	{
-		for (size_t j = 0; j < cols_m2; ++j) {
-			MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
-			MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i + 1)*cols_m1;
-			MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
-
-			m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg, 0);
-		}
-	}
+	tbb::parallel_for(blocked_range2d<int>(0, rows_m1, 0, cols_m2), PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
 }

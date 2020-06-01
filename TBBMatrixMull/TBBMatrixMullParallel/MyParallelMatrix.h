@@ -153,22 +153,23 @@ public:
 	{}
 };
 
-class PPMatrixMullTransposedCrossProduct2D {
+class PPMatrixMullTransposedInnerProduct2D {
 	const MyMatrix& m1, m2_transposed;
 	MyMatrix& m3;
 	const int rows_m1, cols_m1, rows_m2, cols_m2;
 public:
-	void operator()(const tbb::blocked_range3d<int>&r)const {
-		for (int i = r.pages().begin(); i != r.pages().end(); ++i)
+	void operator()(const tbb::blocked_range2d<int>&r)const {
+		for (int i = r.rows().begin(); i != r.rows().end(); ++i)
 		{
-			for (int j = r.rows().begin(); j != r.rows().end(); ++j) {
-				for (int k = r.cols().begin(); k != r.cols().end(); ++k) {
-					m3[i*rows_m1 + j] += m1[i*cols_m1 + k] * m2_transposed[j*cols_m1 + k];
-				}
+			for (int j = r.cols().begin(); j != r.cols().end(); ++j) {
+				MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
+				MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i + 1)*cols_m1;
+				MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
+				m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg, 0);
 			}
 		}
 	}
-	PPMatrixMullTransposedCrossProduct2D(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3,
+	PPMatrixMullTransposedInnerProduct2D(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3,
 		const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2)
 		:m1(_m1), m2_transposed(_m2), m3(_m3), rows_m1(_rows_m1), cols_m1(_cols_m1), rows_m2(_rows_m2), cols_m2(_cols_m2)
 	{}
@@ -181,7 +182,7 @@ void print_matrix(const MyMatrix& m, const int rows, const int cols);
 
 void multiply_parallel(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-void multiply_parallel_rows_cols(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
+void multiply_parallel_nested(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 void multiply_parallel_3D(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
@@ -189,7 +190,7 @@ void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMa
 
 void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
+void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols);
 
