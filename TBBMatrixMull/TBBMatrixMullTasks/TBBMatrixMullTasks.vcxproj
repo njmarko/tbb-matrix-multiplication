@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4592FD23-C550-4594-93C2-F1CADBAA5CE0}</ProjectGuid>
+    <ProjectGuid>{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TBBMatrixMullParallel</RootNamespace>
+    <RootNamespace>TBBMatrixMullTasks</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -30,7 +30,6 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <UseIntelTBB>true</UseIntelTBB>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -38,7 +37,6 @@
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <UseIntelTBB>true</UseIntelTBB>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -133,7 +131,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Full</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -146,14 +144,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MainParallelProgram.cpp" />
-    <ClCompile Include="MullTask.cpp" />
-    <ClCompile Include="MyParallelMatrix.cpp" />
-    <ClCompile Include="ppmain.cpp" />
+    <ClInclude Include="MainTaskProgram.h" />
+    <ClInclude Include="MullTask.h" />
+    <ClInclude Include="MyTaskMatrix.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainParallelProgram.h" />
-    <ClInclude Include="MyParallelMatrix.h" />
+    <ClCompile Include="MainTaskProgram.cpp" />
+    <ClCompile Include="MullTask.cpp" />
+    <ClCompile Include="MyTaskMatrix.cpp" />
+    <ClCompile Include="taskmain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

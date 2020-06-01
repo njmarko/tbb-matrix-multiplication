@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBBMatrixMull", "TBBMatrixMull\TBBMatrixMull.vcxproj", "{E8C6E211-39B7-47E3-9564-7E3BC22D65BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBBMatrixMullSerial", "TBBMatrixMull\TBBMatrixMull.vcxproj", "{E8C6E211-39B7-47E3-9564-7E3BC22D65BB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBBMatrixMullParallel", "TBBMatrixMullParallel\TBBMatrixMullParallel.vcxproj", "{4592FD23-C550-4594-93C2-F1CADBAA5CE0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TBBMatrixMullTasks", "TBBMatrixMullTasks\TBBMatrixMullTasks.vcxproj", "{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{4592FD23-C550-4594-93C2-F1CADBAA5CE0}.Release|x64.Build.0 = Release|x64
 		{4592FD23-C550-4594-93C2-F1CADBAA5CE0}.Release|x86.ActiveCfg = Release|Win32
 		{4592FD23-C550-4594-93C2-F1CADBAA5CE0}.Release|x86.Build.0 = Release|Win32
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Debug|x64.ActiveCfg = Debug|x64
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Debug|x64.Build.0 = Debug|x64
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Debug|x86.ActiveCfg = Debug|Win32
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Debug|x86.Build.0 = Debug|Win32
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Release|x64.ActiveCfg = Release|x64
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Release|x64.Build.0 = Release|x64
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Release|x86.ActiveCfg = Release|Win32
+		{47A54F21-B364-42BC-98DC-1A4B8EBE05BC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
