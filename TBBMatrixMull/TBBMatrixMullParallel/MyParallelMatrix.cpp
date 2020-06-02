@@ -185,6 +185,6 @@ void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2
 	static affinity_partitioner ap;
 	const int processor_count = std::thread::hardware_concurrency();
 
-	tbb::parallel_for(blocked_range2d<int>(0, rows_m1,rows_m1/processor_count*3.4 , 0, cols_m2, cols_m2 / processor_count*2.3),
+	tbb::parallel_for(blocked_range2d<int>(0, rows_m1,(int)rows_m1 / processor_count*3.4+1, 0, cols_m2, (int)cols_m2 / processor_count*2.2+1),
 		PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2),ap);
 }

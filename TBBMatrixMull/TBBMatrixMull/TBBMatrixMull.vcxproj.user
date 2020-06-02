@@ -15,5 +15,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerCommandArguments>../TestData/1000x1000.txt ../TestData/1000x1000.txt out.txt</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <IclProfileGuidedOptimization>PGOInstrument</IclProfileGuidedOptimization>
+    <IclProfileDirectory>C:\Users\Marko\Desktop\PP\Projekat\MatrixMull\tbb-matrix-multiplication\TBBMatrixMull\TBBMatrixMull\x64\Release\</IclProfileDirectory>
   </PropertyGroup>
 </Project>

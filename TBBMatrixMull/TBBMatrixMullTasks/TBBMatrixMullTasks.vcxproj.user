@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>../TestData/3x2.txt ../TestData/2x3.txt out.txt</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>../TestData/1000x1000.txt ../TestData/1000x1000.txt out.txt</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
