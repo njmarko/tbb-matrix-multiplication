@@ -60,6 +60,8 @@ void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes) {
 			to_string(var.first) + "x" + to_string(var.second) + ".txt";
 		mull_two_matrices(inFilename1, inFilename2, outFilename, average_result_times);
 	}
+
+
 }
 
 bool mull_two_matrices(const string & inFilename1, const string & inFilename2, const string & outFilename, std::vector<double>& average_result_times)
