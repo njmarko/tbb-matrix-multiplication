@@ -1,15 +1,42 @@
 #include "MyMatrix.h"
 
-void create_matrix_files(const vector<int>& matrix_sizes) 
+bool validate_results(const MyMatrix& result,int rows_m1, int cols_m1, int rows_m2, int cols_m2)
+{
+
+	MyMatrix valid_result;
+	int rows_res;
+	int cols_res;
+	string validResFilename = "../ValidResults/" +
+		to_string(rows_m1) + "x" + to_string(cols_m1) + "mull" +
+		to_string(rows_m2) + "x" + to_string(cols_m2) + ".txt";
+
+	load_data(validResFilename, valid_result, rows_res, cols_res);
+	if (rows_res != rows_m1 || cols_res != cols_m2)
+	{
+
+	}
+	for (int i = 0; i < rows_m1; i++)
+	{
+		for (int j = 0; j < cols_m2; j++)
+		{
+			if (valid_result[i*cols_m2 + j] != result[i*cols_m2 + j]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void create_matrix_files(const vector<pair<int,int>>& matrix_sizes)
 {
 	string data_folder = "../TestData/";
 
-	for each (int dim in matrix_sizes)
+	for each (pair<int,int> dims in matrix_sizes)
 	{
-		ofstream out("../TestData/" + std::to_string(dim) + "x" + std::to_string(dim) + ".txt");
-		for (int i = 0; i < dim; i++)
+		ofstream out("../TestData/" + std::to_string(dims.first) + "x" + std::to_string(dims.second) + ".txt");
+		for (int i = 0; i < dims.first; i++)
 		{
-			for (int j = 0; j < dim; j++)
+			for (int j = 0; j < dims.second; j++)
 			{
 				out << rand() % 10 << " ";
 			}
@@ -18,8 +45,22 @@ void create_matrix_files(const vector<int>& matrix_sizes)
 		out.flush();
 		out.close();
 	}
+}
 
-	
+void save_result(const string & outFilename, const MyMatrix & res, int rows, int cols)
+{
+
+	ofstream out(outFilename);
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			out << res[i*cols + j] << " ";
+		}
+		out << endl;
+	}
+	out.flush();
+	out.close();
 }
 
 bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
