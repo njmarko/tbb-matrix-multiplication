@@ -364,15 +364,7 @@ bool validate_pp_results(const MyMatrix& result, int rows_m1, int cols_m1, int r
 void save_pp_result(const string& outFilename, const MyMatrix& res, int rows, int cols);
 
 
-/*
-* Loads the data from file into the appropriate matrix, and sets the rows and cols values
-* @param const reference to a name of the file that is being loaded
-* @parama reference to a matrix where the data will be stored
-* @param reference to a variable that represents matrix rows
-* @param reference to a variable that represents matrix columns
-* @returns true if the operation was successful
-*/
-bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols);
+
 
 
 /*

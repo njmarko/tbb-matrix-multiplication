@@ -118,19 +118,19 @@ void print_pp_result_table(const std::vector<std::pair<int, int>>& matrix_sizes,
 {
 	//std::stringstream ss;
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << string(20 + 10 * matrix_sizes.size(), '=');
 	cout << endl;
-	cout.width(15);
-	cout << "Algoritham\\Size";
+	cout.width(20);
+	cout << "Algorithm\\Size";
 	for each (pair<int, int> var in matrix_sizes)
 	{
 		cout.width(10);
 		cout << to_string(var.first) + "x" + to_string(var.second);
 	}
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << string(20 + 10 * matrix_sizes.size(), '=');
 	cout << endl;
-	cout.width(15);
+	cout.width(20);
 	cout << "Parallel For";
 	for each (double var in average_result_times)
 	{
@@ -138,6 +138,6 @@ void print_pp_result_table(const std::vector<std::pair<int, int>>& matrix_sizes,
 		cout << var;
 	}
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '-');
+	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
 }

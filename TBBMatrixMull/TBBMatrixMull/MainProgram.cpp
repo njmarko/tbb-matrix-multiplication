@@ -68,19 +68,19 @@ void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, co
 {
 	//std::stringstream ss;
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << string(20 + 10 * matrix_sizes.size(), '=');
 	cout << endl;
-	cout.width(15);
-	cout << "Algoritham\\Size"; 
+	cout.width(20);
+	cout << "Algorithm\\Size"; 
 	for each (pair<int, int> var in matrix_sizes)
 	{
 		cout.width(10);
 		cout << to_string(var.first )+ "x" + to_string(var.second);
 	}
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << string(20 + 10 * matrix_sizes.size(), '=');
 	cout << endl;
-	cout.width(15);
+	cout.width(20);
 	cout << "Serial";
 	for each (double var in average_result_times)
 	{
@@ -88,7 +88,7 @@ void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, co
 		cout << var;
 	}
 	cout << endl;
-	cout << string(15 + 10 * matrix_sizes.size(), '-');
+	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
 
 }
@@ -121,13 +121,13 @@ bool mull_two_matrices(const string & inFilename1, const string & inFilename2, c
 		tick_count t1 = tick_count::now();
 		mull_serial_transp_inner_prod(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 		tick_count t2 = tick_count::now();
-		//if (!validate_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
-		//{
-		//	cout << "Invalid results for matrix multiplication of " <<
-		//		to_string(rows_m1) + "x" + to_string(cols_m1) + " and " +
-		//		to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices\n";
-		//	return false;
-		//}
+		if (!validate_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
+		{
+			cout << "Invalid results for matrix multiplication of " <<
+				to_string(rows_m1) + "x" + to_string(cols_m1) + " and " +
+				to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices\n";
+			return false;
+		}
 
 		times.push_back((t2 - t1).seconds() * 1000); // time in ms
 	}

@@ -135,3 +135,14 @@ task * RowsInRange::execute()
 	}
 	return NULL;
 }
+
+string taskTypeToStr(TaskType t)
+{
+	switch (t)
+	{
+	case single_element: return "Single element";
+	case signle_row: return "Single row";
+	case distributed: return "Distributed";
+	default: return "NoType";
+	}
+}

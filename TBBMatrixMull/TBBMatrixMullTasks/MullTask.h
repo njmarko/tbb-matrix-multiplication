@@ -6,6 +6,28 @@
 using namespace std;
 using namespace tbb;
 
+
+/*
+* Different task types
+*/
+enum TaskType
+{
+	single_element=0,
+	signle_row,
+	distributed
+};
+
+/*
+* Converts the task type to string
+* @param enum type of the task
+* @returns string representation of the type of task
+*/
+string taskTypeToStr(TaskType t);
+
+
+/*
+*
+*/
 class MullSingleElemTask :public task
 {
 public:

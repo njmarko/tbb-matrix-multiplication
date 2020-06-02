@@ -237,6 +237,4 @@ void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2
 		tbb::parallel_for(blocked_range2d<int>(0, rows_m1, 500, 0, cols_m2, 100),
 			PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2),auto_partitioner());
 	}
-
-
 }
