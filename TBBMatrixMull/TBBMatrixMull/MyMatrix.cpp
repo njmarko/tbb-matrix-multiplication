@@ -1,6 +1,26 @@
 #include "MyMatrix.h"
 
+void create_matrix_files(const vector<int>& matrix_sizes) 
+{
+	string data_folder = "../TestData/";
 
+	for each (int dim in matrix_sizes)
+	{
+		ofstream out("../TestData/" + std::to_string(dim) + "x" + std::to_string(dim) + ".txt");
+		for (int i = 0; i < dim; i++)
+		{
+			for (int j = 0; j < dim; j++)
+			{
+				out << rand() % 10 << " ";
+			}
+			out << endl;
+		}
+		out.flush();
+		out.close();
+	}
+
+	
+}
 
 bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 {
@@ -8,7 +28,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 	fin.open(filename);
 	if (!fin.is_open())
 	{
-		std::cout << "File cannot be opened\n";
+		throw runtime_error("File cannot be opened\n");
 		return false;
 	}
 	std::stringstream ss;

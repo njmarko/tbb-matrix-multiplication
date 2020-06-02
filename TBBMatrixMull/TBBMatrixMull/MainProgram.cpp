@@ -5,20 +5,24 @@
 
 int mullSerial(int argc, char * argv[])
 {
-	char* inFilename1;
-	char* inFilename2;
-	char* outFilename;
-
-	if (argc != 4) {
-		std::cout << "Wrong number of input arguments!\n";
-		return -1;
-	}
-
-	inFilename1 = argv[1];
-	inFilename2 = argv[2];
-
+	// set the seed for pseudorandom numbers that are used for generating data
+	srand(time(NULL));
+	// dimensions of the matrices that will be created and tested
+	vector<int> matrix_sizes = {10,25,50,100,250,500,1000,2000,4000};
 	try
 	{
+		//create_matrix_files(matrix_sizes);
+		char* inFilename1;
+		char* inFilename2;
+		char* outFilename;
+
+		if (argc != 4) {
+			throw runtime_error("Wrong number of input arguments!\n");
+		}
+
+		inFilename1 = argv[1];
+		inFilename2 = argv[2];
+
 		MyMatrix m1;
 		int rows_m1 = 0;
 		int cols_m1 = 0;
@@ -35,8 +39,6 @@ int mullSerial(int argc, char * argv[])
 		if (rows_m2 < 10 && cols_m2 < 10)
 			print_matrix(m2, rows_m2, cols_m2);
 
-
-
 		MyMatrix m3(rows_m1*cols_m2,0);
 		tick_count t1 = tick_count::now();
 		mull_serial_transp_inner_prod(m1,m2,m3,rows_m1,cols_m1,rows_m2, cols_m2);
@@ -45,7 +47,7 @@ int mullSerial(int argc, char * argv[])
 		if (rows_m1 < 10 && cols_m2 < 10)
 			print_matrix(m3, rows_m1, cols_m2);
 	}
-	catch (const MatrixException&e)
+	catch (const runtime_error&e)
 	{
 		std::cout << e.what() << endl;
 	}

@@ -7,6 +7,7 @@ Date: 5/17/2020
 
 #include <iostream>
 #include <tbb\tick_count.h>
+#include <ctime>
 
 using namespace std;
 using namespace tbb;
