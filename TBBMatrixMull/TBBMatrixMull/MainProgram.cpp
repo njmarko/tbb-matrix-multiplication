@@ -61,6 +61,35 @@ void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes) {
 		mull_two_matrices(inFilename1, inFilename2, outFilename, average_result_times);
 	}
 
+	print_result_table(matrix_sizes, average_result_times);
+}
+
+void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
+{
+	//std::stringstream ss;
+	cout << endl;
+	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << endl;
+	cout.width(15);
+	cout << "Algoritham\\Size"; 
+	for each (pair<int, int> var in matrix_sizes)
+	{
+		cout.width(10);
+		cout << to_string(var.first )+ "x" + to_string(var.second);
+	}
+	cout << endl;
+	cout << string(15 + 10 * matrix_sizes.size(), '=');
+	cout << endl;
+	cout.width(15);
+	cout << "Serial";
+	for each (double var in average_result_times)
+	{
+		cout.width(10);
+		cout << var;
+	}
+	cout << endl;
+	cout << string(15 + 10 * matrix_sizes.size(), '-');
+	cout << endl;
 
 }
 

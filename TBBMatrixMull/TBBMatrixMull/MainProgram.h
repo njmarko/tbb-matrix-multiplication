@@ -14,6 +14,7 @@ Date: 5/17/2020
 #include <string>
 #include <fstream>
 #include <map>
+#include <sstream>
 
 using namespace std;
 using namespace tbb;
@@ -45,3 +46,10 @@ bool mull_two_matrices(const string& inputFile1, const string& inputFile2,const 
 * @param const reference to a vector of matrix sizes that indicate what matrices will be loaded and multiplied
 */
 void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes);
+
+/*
+* Prints the average result times for given matrix sizes
+* @param const reference to a vector of matrix sizes that indicate what matrices will be printed in the header
+* @param const reference to a vector that holds average result times for apropriate matrix size
+*/
+void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times);
