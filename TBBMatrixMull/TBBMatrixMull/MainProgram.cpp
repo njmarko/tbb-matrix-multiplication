@@ -21,10 +21,11 @@ int mullSerial(int argc, char * argv[])
 		if (argc !=4 && argc != 1) {
 			throw runtime_error("Wrong number of input arguments!\n");
 		}
-		std::vector<double> average_result_times;
 
-		if (argc == 4)
+
+		if (argc == 4) // when the filenames are givens
 		{
+			std::vector<double> average_result_times;
 			inFilename1 = argv[1];
 			inFilename2 = argv[2];
 			outFilename = argv[3];
@@ -33,6 +34,10 @@ int mullSerial(int argc, char * argv[])
 				cout << "Average time for serial multiplication: " << average_result_times[0] << endl;
 			}		
 		}
+		if (argc == 1) // when there are no arguments, go trough the matrix_sizes vector
+		{
+			mull_all_matrices(matrix_sizes);
+		}
 	}
 	catch (const runtime_error&e)
 	{
@@ -40,6 +45,21 @@ int mullSerial(int argc, char * argv[])
 	}
 
 	return 0;
+}
+
+void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes) {
+
+	std::vector<double> average_result_times;
+
+	for each (pair<int,int> var in matrix_sizes)
+	{
+		string inFilename1 = "../TestData/" + to_string(var.first) + "x" + to_string(var.second) + ".txt";
+		string inFilename2 = "../TestData/" + to_string(var.first) + "x" + to_string(var.second) + ".txt";
+		string outFilename = "../MultiplicationResults/serial/" + 
+			to_string(var.first) + "x" + to_string(var.second) + "mull"+
+			to_string(var.first) + "x" + to_string(var.second) + ".txt";
+		mull_two_matrices(inFilename1, inFilename2, outFilename, average_result_times);
+	}
 }
 
 bool mull_two_matrices(const string & inFilename1, const string & inFilename2, const string & outFilename, std::vector<double>& average_result_times)
@@ -71,24 +91,25 @@ bool mull_two_matrices(const string & inFilename1, const string & inFilename2, c
 		t1 = tick_count::now();
 		mull_serial_transp_inner_prod(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 		t2 = tick_count::now();
-		if (!validate_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
-		{
-			cout << "Invalid results for matrix multiplication of " <<
-				to_string(rows_m1) + "x" + to_string(cols_m1) + " and " +
-				to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices\n";
-			return false;
-		}
+		//if (!validate_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
+		//{
+		//	cout << "Invalid results for matrix multiplication of " <<
+		//		to_string(rows_m1) + "x" + to_string(cols_m1) + " and " +
+		//		to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices\n";
+		//	return false;
+		//}
 
 		times.push_back((t2 - t1).seconds() * 1000); // time in ms
 	}
+	double avg = std::accumulate(times.cbegin(), times.cend(), 0.0) / times.size();
 	cout << "Average time taken for serial multiplication of "
 		<< to_string(rows_m1) << "x" << to_string(cols_m1) << " and " 
 		<< to_string(rows_m2) << "x" << to_string(cols_m2) << " matrices "
-		<<" : " << (t2 - t1).seconds() * 1000 << "ms.\n";
+		<<" : " << avg << "ms.\n";
 	if (rows_m1 < 10 && cols_m2 < 10)
 		print_matrix(m3, rows_m1, cols_m2);
 	cout << "Results are valid!\n";
-	average_result_times.emplace_back(std::accumulate(times.cbegin(),times.cend(),0.0)/times.size());
+	average_result_times.emplace_back(avg);
 	save_result(outFilename, m3, rows_m1, cols_m2);
 	return true;
 }

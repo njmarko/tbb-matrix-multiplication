@@ -11,6 +11,9 @@ Date: 5/17/2020
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <string>
+#include <fstream>
+#include <map>
 
 using namespace std;
 using namespace tbb;
@@ -35,3 +38,10 @@ int mullSerial(int c,char* argv[]);
 * @throws runtime_excetpion if the files can not be opened
 */
 bool mull_two_matrices(const string& inputFile1, const string& inputFile2,const string& outFilename,std::vector<double>& average_result_times);
+
+/*
+* When no input arguments are given, the program uses this function to go trough a vector of predefined matrices
+* It loads the matrices and multiplies them
+* @param const reference to a vector of matrix sizes that indicate what matrices will be loaded and multiplied
+*/
+void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes);
