@@ -40,7 +40,7 @@ int mullTask(int argc, char * argv[])
 		tick_count t1 = tick_count::now();
 		MyMatrix m2_transposed(rows_m2*cols_m2);
 		transpose(m2, m2_transposed, rows_m2, cols_m2);
-		MullSingleElemTask& task = *new(task::allocate_root()) MullSingleElemTask(m1, m2_transposed, m3,rows_m1,cols_m1,rows_m2,cols_m2);
+		MullDistributedTask& task = *new(task::allocate_root()) MullDistributedTask(m1, m2_transposed, m3,rows_m1,cols_m1,rows_m2,cols_m2);
 		task::spawn_root_and_wait(task);
 		tick_count t2 = tick_count::now();
 		cout << "Time taken for parallel multiplication with tasks: " << (t2 - t1).seconds() * 1000 << "ms.\n";
