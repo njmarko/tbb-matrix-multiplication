@@ -6,10 +6,10 @@
 using namespace std;
 using namespace tbb;
 
-class MullTask :public task
+class MullSingleElemTask :public task
 {
 public:
-	MullTask(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3, const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2);
+	MullSingleElemTask(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3, const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2);
 	task* execute();
 
 private:
