@@ -340,7 +340,7 @@ void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2
 * @param number of rows
 * @param number of columns
 */
-void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols);
+void pptranspose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols);
 
 /*
 * Loads the file with the correct result and checks if the numbers match
@@ -378,32 +378,32 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols);
 /*
 * An exception that inherits runtime_error and is a parent class to other matrix exceptions
 */
-struct MatrixException : public std::runtime_error {
+struct PPMatrixException : public std::runtime_error {
 	/*
 	*Constructor that recieves an error message and calls the parent constructor
 	* @param error message that will be displayed
 	*/
-	MatrixException(const char* message) : runtime_error(message) {};
+	PPMatrixException(const char* message) : runtime_error(message) {};
 };
 
 /*
 * A struct that inherits MatrixException and is thrown when dimensions are incompatible during matrix multiplication
 */
-struct IncompatibleDimensions : public MatrixException {
+struct PPIncompatibleDimensions : public PPMatrixException {
 	/*
 	*Constructor that calls the parent constructor with a message when matrix dimensions are incompatible
 	*/
-	IncompatibleDimensions() : MatrixException("Inner dimensions must be the same!") {};
+	PPIncompatibleDimensions() : PPMatrixException("Inner dimensions must be the same!") {};
 };
 
 /*
 * A struct that inherits MatrixException and is thrown when data that is being loaded is invalid
 */
-struct InvalidData : public MatrixException {
+struct PPInvalidData : public PPMatrixException {
 	/*
 	*Constructor that calls the parent constructor with a message when data you are trying to load is invalid
 	*/
-	InvalidData(string filename) : MatrixException(("Unable to load matrix data from " + filename + "\nbecause the data is invalid!").c_str()) {};
+	PPInvalidData(string filename) : PPMatrixException(("Unable to load matrix data from " + filename + "\nbecause the data is invalid!").c_str()) {};
 };
 
 

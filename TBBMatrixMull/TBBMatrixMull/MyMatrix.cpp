@@ -212,10 +212,9 @@ void mull_serial_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyM
 	{
 		for (size_t j = 0; j < cols_m2; ++j) {
 			MyMatrix::const_iterator cit_m1_beg = m1.cbegin() + i*cols_m1;
-			MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i+1)*cols_m1;
+			MyMatrix::const_iterator cit_m1_end = m1.cbegin() + (i + 1)*cols_m1;
 			MyMatrix::const_iterator cit_m2_beg = m2_transposed.cbegin() + j*rows_m2;
-
-			m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg,0);
+			m3[i*rows_m1 + j] = std::inner_product(cit_m1_beg, cit_m1_end, cit_m2_beg, 0);
 		}
 	}
 }

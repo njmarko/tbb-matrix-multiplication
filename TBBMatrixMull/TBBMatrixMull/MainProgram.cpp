@@ -114,14 +114,13 @@ bool mull_two_matrices(const string & inFilename1, const string & inFilename2, c
 	MyMatrix m3;
 
 	vector<double> times;
-	tick_count t1;
-	tick_count t2;
+
 	for (int i = 0; i < 5; i++)
 	{
 		m3 = MyMatrix(rows_m1*cols_m2, 0);
-		t1 = tick_count::now();
+		tick_count t1 = tick_count::now();
 		mull_serial_transp_inner_prod(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2);
-		t2 = tick_count::now();
+		tick_count t2 = tick_count::now();
 		//if (!validate_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
 		//{
 		//	cout << "Invalid results for matrix multiplication of " <<

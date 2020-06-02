@@ -158,6 +158,7 @@
       <OptimizationDiagnosticLevel>Disable</OptimizationDiagnosticLevel>
       <EnableGapAnalysis>Disable</EnableGapAnalysis>
       <OpenMP>GenerateParallelCode</OpenMP>
+      <LoopUnrolling>8</LoopUnrolling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

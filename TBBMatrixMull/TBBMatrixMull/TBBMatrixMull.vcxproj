@@ -157,7 +157,7 @@
       <GPUArch>Default</GPUArch>
       <ConditionalBranch>keep</ConditionalBranch>
       <EnableMatrixMultiplyLibraryCall>Default</EnableMatrixMultiplyLibraryCall>
-      <LoopUnrolling>12</LoopUnrolling>
+      <LoopUnrolling>8</LoopUnrolling>
       <EnableAnsiAliasing>true</EnableAnsiAliasing>
     </ClCompile>
     <Link>

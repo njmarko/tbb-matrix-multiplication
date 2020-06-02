@@ -65,7 +65,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 			ss >> val;
 			if (ss.fail()) { // if something other than int is encountered or the row is empty
 				if (!ss.eof()) // if the row is not empty, then it is an invalid input
-					throw InvalidData(filename);
+					throw PPInvalidData(filename);
 				else { // in case the row is empty just skip it
 					break;
 				}
@@ -90,7 +90,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 		}
 		else
 		{
-			throw InvalidData(filename);
+			throw PPInvalidData(filename);
 		}
 	}
 	return true;
@@ -138,7 +138,7 @@ void multiply_parallel(const MyMatrix & m1, const  MyMatrix & m2, MyMatrix& m3,
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 
 	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMull(m1,m2,m3,rows_m1,cols_m1,rows_m2,cols_m2));
@@ -148,7 +148,7 @@ void multiply_parallel_nested(const MyMatrix & m1, const  MyMatrix & m2, MyMatri
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 
 	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMull(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2));
@@ -157,13 +157,13 @@ void multiply_parallel_nested(const MyMatrix & m1, const  MyMatrix & m2, MyMatri
 void multiply_parallel_3D(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 	
 	tbb::parallel_for(blocked_range3d<int>(0, rows_m1, 0, cols_m2, 0, cols_m1), PPMatrixMull3D(m1, m2, m3, rows_m1, cols_m1, rows_m2, cols_m2));
 }
 
-void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols) {
+void pptranspose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols) {
 	for (int i = 0; i < cols; ++i)
 	{
 		for (int j = 0; j < rows; ++j) {
@@ -176,10 +176,10 @@ void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMa
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 	MyMatrix m2_transposed(rows_m2*cols_m2);
-	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	pptranspose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
 
 	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMullTransposed(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
@@ -189,10 +189,10 @@ void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, M
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 	MyMatrix m2_transposed(rows_m2*cols_m2);
-	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	pptranspose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
 	tbb::parallel_for(blocked_range3d<int>(0, rows_m1, 0, cols_m2, 0, cols_m1), PPMatrixMullTransposed3D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
 }
@@ -201,10 +201,10 @@ void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, M
 void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix & m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 	MyMatrix m2_transposed(rows_m2*cols_m2);
-	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	pptranspose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
 	tbb::parallel_for(blocked_range<int>(0, rows_m1), PPMatrixMullTransposedInnerProduct(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2));
 }
@@ -217,16 +217,26 @@ void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2
 	const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2)
 {
 	if (cols_m1 != rows_m2) {
-		throw IncompatibleDimensions();
+		throw PPIncompatibleDimensions();
 	}
 
 	MyMatrix m2_transposed(rows_m2*cols_m2);
-	transpose(m2, m2_transposed, rows_m2, cols_m2);
+	pptranspose(m2, m2_transposed, rows_m2, cols_m2);
 	//print_matrix(m2_transposed, cols_m2, rows_m2);
 
 	static affinity_partitioner ap;
 	const int processor_count = std::thread::hardware_concurrency();
 
-	tbb::parallel_for(blocked_range2d<int>(0, rows_m1,(int)rows_m1 / processor_count*3.4+1, 0, cols_m2, (int)cols_m2 / processor_count*2.2+1),
-		PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2),ap);
+	if (rows_m1*cols_m2 <= 1000000)
+	{
+		tbb::parallel_for(blocked_range2d<int>(0, rows_m1, (int)rows_m1 / processor_count*3.4 + 1, 0, cols_m2, (int)cols_m2 / processor_count*2.2 + 1),
+			PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2), ap);
+	}
+	else
+	{
+		tbb::parallel_for(blocked_range2d<int>(0, rows_m1, 500, 0, cols_m2, 100),
+			PPMatrixMullTransposedInnerProduct2D(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2),auto_partitioner());
+	}
+
+
 }
