@@ -199,9 +199,22 @@ public:
 	{}
 };
 
-
+/*
+* Loads the data from file into the appropriate matrix, and sets the rows and cols values
+* @param const reference to a name of the file that is being loaded
+* @parama reference to a matrix where the data will be stored
+* @param reference to a variable that represents matrix rows
+* @param reference to a variable that represents matrix columns
+* @returns true if the operation was successful
+*/
 bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols);
 
+/*
+* Prints the matrix
+* @param cosnt reference to a matrix
+* @param number of rows
+* @param number of columns
+*/
 void print_matrix(const MyMatrix& m, const int rows, const int cols);
 
 void multiply_parallel(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
@@ -218,7 +231,48 @@ void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, M
 
 void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
+
+/*
+* Transposes the source matrix and writes the results into the destination matrix
+* @param const reference to a source matrix
+* @param const reference to a destination matrix
+* @param number of rows
+* @param number of columns
+*/
 void transpose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols);
+
+/*
+* Loads the file with the correct result and checks if the numbers match
+* @param const reference for the matrix that we want to validate
+* @param number of rows of the first matrix
+* @param number of cols of the first matrix
+* @param number of rows of the second matrix
+* @param number of cols of the second matrix
+* @returns true if the result is correct
+*/
+bool validate_pp_results(const MyMatrix& result, int rows_m1, int cols_m1, int rows_m2, int cols_m2);
+
+
+/*
+* Saves the result Matrix at the specified location
+* @param const reference for a output filename
+* @param const reference for the result matrix
+* @param number of rows in the matrix
+* @param number of columns in the matrix
+*/
+void save_pp_result(const string& outFilename, const MyMatrix& res, int rows, int cols);
+
+
+/*
+* Loads the data from file into the appropriate matrix, and sets the rows and cols values
+* @param const reference to a name of the file that is being loaded
+* @parama reference to a matrix where the data will be stored
+* @param reference to a variable that represents matrix rows
+* @param reference to a variable that represents matrix columns
+* @returns true if the operation was successful
+*/
+bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols);
+
 
 /*
 * An exception that inherits runtime_error and is a parent class to other matrix exceptions

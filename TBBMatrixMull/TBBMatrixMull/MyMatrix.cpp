@@ -1,4 +1,5 @@
 #include "MyMatrix.h"
+#include "..\TBBMatrixMullParallel\MyParallelMatrix.h"
 
 bool validate_results(const MyMatrix& result,int rows_m1, int cols_m1, int rows_m2, int cols_m2)
 {
@@ -46,6 +47,7 @@ void create_matrix_files(const vector<pair<int,int>>& matrix_sizes)
 		out.close();
 	}
 }
+
 
 void save_result(const string & outFilename, const MyMatrix & res, int rows, int cols)
 {

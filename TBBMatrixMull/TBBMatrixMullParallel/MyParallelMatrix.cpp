@@ -1,5 +1,47 @@
 #include "MyParallelMatrix.h"
 
+bool validate_pp_results(const MyMatrix& result, int rows_m1, int cols_m1, int rows_m2, int cols_m2)
+{
+
+	MyMatrix valid_result;
+	int rows_res;
+	int cols_res;
+	string validResFilename = "../ValidResults/" +
+		to_string(rows_m1) + "x" + to_string(cols_m1) + "mull" +
+		to_string(rows_m2) + "x" + to_string(cols_m2) + ".txt";
+
+	load_data(validResFilename, valid_result, rows_res, cols_res);
+	if (rows_res != rows_m1 || cols_res != cols_m2)
+	{
+
+	}
+	for (int i = 0; i < rows_m1; i++)
+	{
+		for (int j = 0; j < cols_m2; j++)
+		{
+			if (valid_result[i*cols_m2 + j] != result[i*cols_m2 + j]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void save_pp_result(const string & outFilename, const MyMatrix & res, int rows, int cols)
+{
+
+	ofstream out(outFilename);
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			out << res[i*cols + j] << " ";
+		}
+		out << endl;
+	}
+	out.flush();
+	out.close();
+}
 
 
 bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
@@ -8,7 +50,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 	fin.open(filename);
 	if (!fin.is_open())
 	{
-		std::cout << "File cannot be opened\n";
+		throw runtime_error("File cannot be opened\n");
 		return false;
 	}
 	std::stringstream ss;

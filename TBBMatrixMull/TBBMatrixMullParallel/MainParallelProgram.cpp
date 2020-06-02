@@ -51,3 +51,16 @@ int mullParallel(int argc, char * argv[])
 
 	return 0;
 }
+
+bool mull_two_pp_matrices(const string & inputFile1, const string & inputFile2, const string & outFilename, std::vector<double>& average_result_times)
+{
+	return false;
+}
+
+void mull_all_pp_matrices(const std::vector<std::pair<int, int>>& matrix_sizes)
+{
+}
+
+void print_pp_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
+{
+}
