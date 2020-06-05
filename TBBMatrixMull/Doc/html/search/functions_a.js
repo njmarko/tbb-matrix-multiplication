@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['valid_5ftask_5fresults_198',['valid_task_results',['../_my_task_matrix_8cpp.html#a379b9282e9ba82e76ffb18701b9f96bb',1,'valid_task_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyTaskMatrix.cpp'],['../_my_task_matrix_8h.html#a379b9282e9ba82e76ffb18701b9f96bb',1,'valid_task_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyTaskMatrix.cpp']]],
+  ['validate_5fpp_5fresults_199',['validate_pp_results',['../_my_parallel_matrix_8cpp.html#ab963560ef77f83310f8ae94b28464ad4',1,'validate_pp_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyParallelMatrix.cpp'],['../_my_parallel_matrix_8h.html#ab963560ef77f83310f8ae94b28464ad4',1,'validate_pp_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyParallelMatrix.cpp']]],
+  ['validate_5fresults_200',['validate_results',['../_my_matrix_8cpp.html#a24f0f2176c9f1a449433c59c654857ef',1,'validate_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyMatrix.cpp'],['../_my_matrix_8h.html#a24f0f2176c9f1a449433c59c654857ef',1,'validate_results(const MyMatrix &amp;result, int rows_m1, int cols_m1, int rows_m2, int cols_m2):&#160;MyMatrix.cpp']]]
+];

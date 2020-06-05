@@ -51,17 +51,17 @@ bool mull_two_pp_matrices(const string & inputFile1, const string & inputFile2, 
 	int rows_m1 = 0;
 	int cols_m1 = 0;
 
-	load_data(inputFile1, m1, rows_m1, cols_m1);
+	load_data_ppfor(inputFile1, m1, rows_m1, cols_m1);
 
 	if (rows_m1 < 10 && cols_m1 < 10)
-		print_matrix(m1, rows_m1, cols_m1);
+		print_matrix_ppfor(m1, rows_m1, cols_m1);
 
 	MyMatrix m2;
 	int rows_m2 = 0;
 	int cols_m2 = 0;
-	load_data(inputFile2, m2, rows_m2, cols_m2);
+	load_data_ppfor(inputFile2, m2, rows_m2, cols_m2);
 	if (rows_m2 < 10 && cols_m2 < 10)
-		print_matrix(m2, rows_m2, cols_m2);
+		print_matrix_ppfor(m2, rows_m2, cols_m2);
 
 	MyMatrix m3;
 
@@ -90,7 +90,7 @@ bool mull_two_pp_matrices(const string & inputFile1, const string & inputFile2, 
 		<< to_string(rows_m2) << "x" << to_string(cols_m2) << " matrices "
 		<< " : " << avg << "ms.\n";
 	if (rows_m1 < 10 && cols_m2 < 10)
-		print_matrix(m3, rows_m1, cols_m2);
+		print_matrix_ppfor(m3, rows_m1, cols_m2);
 	cout << "Results are valid!\n";
 	average_result_times.emplace_back(avg);
 	save_pp_result(outFilename, m3, rows_m1, cols_m2);
@@ -112,6 +112,7 @@ void mull_all_pp_matrices(const std::vector<std::pair<int, int>>& matrix_sizes)
 	}
 
 	print_pp_result_table(matrix_sizes, average_result_times);
+	save_average_times_ppfor(matrix_sizes, average_result_times);
 }
 
 void print_pp_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
@@ -140,4 +141,22 @@ void print_pp_result_table(const std::vector<std::pair<int, int>>& matrix_sizes,
 	cout << endl;
 	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
+}
+
+void save_average_times_ppfor(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
+{
+	string outFilename = "../MultiplicationResults/timesParallelFor/AverageParallelForMullTimes.txt";
+	ofstream out(outFilename);
+	for each (pair<int, int> var in matrix_sizes)
+	{
+		out << var.first << " ";
+	}
+	out << endl;
+	for each (double var in average_result_times)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	out.flush();
+	out.close();
 }

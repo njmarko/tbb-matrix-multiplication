@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['load_5fdata_5',['load_data',['../_my_matrix_8cpp.html#abde077fc1067448b5a166c711b0f1e96',1,'load_data(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyMatrix.cpp'],['../_my_matrix_8h.html#abde077fc1067448b5a166c711b0f1e96',1,'load_data(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyMatrix.cpp']]],
+  ['load_5fdata_5fppfor_6',['load_data_ppfor',['../_my_parallel_matrix_8cpp.html#a214d7d7f2fd0931108559fc66d9405e3',1,'load_data_ppfor(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyParallelMatrix.cpp'],['../_my_parallel_matrix_8h.html#a214d7d7f2fd0931108559fc66d9405e3',1,'load_data_ppfor(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyParallelMatrix.cpp']]],
+  ['load_5fdata_5ftasks_7',['load_data_tasks',['../_my_task_matrix_8cpp.html#aef94b8ae7f4cd4e7c2781b4758218931',1,'load_data_tasks(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyTaskMatrix.cpp'],['../_my_task_matrix_8h.html#aef94b8ae7f4cd4e7c2781b4758218931',1,'load_data_tasks(const std::string &amp;filename, MyMatrix &amp;m, int &amp;rows, int &amp;cols):&#160;MyTaskMatrix.cpp']]]
+];

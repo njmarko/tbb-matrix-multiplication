@@ -142,6 +142,9 @@
       <Mtune>skylake</Mtune>
       <ConditionalBranch>keep</ConditionalBranch>
       <UseMSVC>false</UseMSVC>
+      <LoopUnrolling>
+      </LoopUnrolling>
+      <CCppSupport>Cpp11Support</CCppSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -10,7 +10,7 @@ bool validate_pp_results(const MyMatrix& result, int rows_m1, int cols_m1, int r
 		to_string(rows_m1) + "x" + to_string(cols_m1) + "mull" +
 		to_string(rows_m2) + "x" + to_string(cols_m2) + ".txt";
 
-	load_data(validResFilename, valid_result, rows_res, cols_res);
+	load_data_ppfor(validResFilename, valid_result, rows_res, cols_res);
 	if (rows_res != rows_m1 || cols_res != cols_m2)
 	{
 
@@ -44,7 +44,7 @@ void save_pp_result(const string & outFilename, const MyMatrix & res, int rows, 
 }
 
 
-bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
+bool load_data_ppfor(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 {
 	std::ifstream fin;
 	fin.open(filename);
@@ -96,7 +96,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 	return true;
 }
 
-void print_matrix(const MyMatrix& m, const int rows, const int cols)
+void print_matrix_ppfor(const MyMatrix& m, const int rows, const int cols)
 {
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 

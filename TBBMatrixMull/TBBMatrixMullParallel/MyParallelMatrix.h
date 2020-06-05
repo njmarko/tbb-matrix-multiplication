@@ -1,5 +1,5 @@
 #pragma once
-/*
+/**
 Author: Marko Njegomir sw-38-2018
 Project: Serial Matrix Multiplication using Intel's TBB library
 Date: 5/17/2020
@@ -20,7 +20,7 @@ Date: 5/17/2020
 using namespace std;
 using namespace tbb;
 
-/*
+/**
 * Represents 1D matrix
 */
 typedef std::vector<int> MyMatrix;
@@ -33,7 +33,7 @@ class PPMatrixMullColls;
 class PPMatrixMullRows;
 
 
-/*
+/**
 * Functor that does basic multiplication of the matrices with standard blocked range.
 */
 class PPMatrixMull {
@@ -57,7 +57,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that goes trough matrix columns and writes the results of the matrix multiplication
 */
 class PPMatrixMullColls {
@@ -79,7 +79,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that goes trough rows and has a nested parallel for function that goes trough columns
 */
 class PPMatrixMullRows {
@@ -100,7 +100,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that multiplies matrix A matrix B by using a 3D blocked range.
 */
 class PPMatrixMull3D {
@@ -124,7 +124,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that multiplies matrix A with transposed matrix B by using a standard blocked range.
 */
 class PPMatrixMullTransposed {
@@ -149,7 +149,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that multiplies matrix A with transposed matrix B by using a 3D blocked range.
 */
 class PPMatrixMullTransposed3D {
@@ -173,7 +173,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that multiplies matrix A with transposed matrix B by using a standard blocked range
 * and inner_product function for calculating each element in the resulting matrix C
 */
@@ -199,7 +199,7 @@ public:
 	{}
 };
 
-/*
+/**
 * Functor that multiplies matrix A with transposed matrix B by using a 2D blocked range
 * and inner_product function for calculating each element in the resulting matrix C
 */
@@ -225,141 +225,141 @@ public:
 	{}
 };
 
-/*
+/**
 * Loads the data from file into the appropriate matrix, and sets the rows and cols values
-* @param const reference to a name of the file that is being loaded
-* @parama reference to a matrix where the data will be stored
-* @param reference to a variable that represents matrix rows
-* @param reference to a variable that represents matrix columns
+* @param filename const reference to a name of the file that is being loaded
+* @param m reference to a matrix where the data will be stored
+* @param rows reference to a variable that represents matrix rows
+* @param cols reference to a variable that represents matrix columns
 * @returns true if the operation was successful
 */
-bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols);
+bool load_data_ppfor(const std::string& filename, MyMatrix& m, int& rows, int& cols);
 
-/*
+/**
 * Prints the matrix
-* @param cosnt reference to a matrix
-* @param number of rows
-* @param number of columns
+* @param m cosnt reference to a matrix
+* @param rows dst number of rows
+* @param cols number of columns
 */
-void print_matrix(const MyMatrix& m, const int rows, const int cols);
+void print_matrix_ppfor(const MyMatrix& m, const int rows, const int cols);
 
 
-/*
+/**
 * Multiplies the matrices by using a basic parallel for loop with standard blocked range
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 nst reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void multiply_parallel(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-/*
+/**
 * Multiplies the matrices by using 3 nested parallel for loops with standard blocked range
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void multiply_parallel_nested(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-/*
+/**
 * Multiplies the matrices by using parallel for loop with 3D blocked range
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void multiply_parallel_3D(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 
-/*
+/**
 * Multiplies the matrix A with transposed matrix B by using parallel for loop with standard blocked range.
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void multiply_parallel_transposed(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-/*
+/**
 * Multiplies the matrix A with transposed matrix B by using parallel for loop with 3D blocked range.
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void multiply_parallel_transposed_3d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
-/*
+/**
 * Multiplies the matrix A with transposed matrix B by using parallel for loop with standard blocked range.
 * Uses inner_product function to calculate each element in the resulting matrix.
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void mull_parallel_transp_inner_prod(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 
-/*
+/**
 * Multiplies the matrix A with transposed matrix B by using parallel for loop with 2D blocked range.
 * Uses inner_product function to calculate each element in the resulting matrix.
-* @param const reference of first matrix
-* @param const reference of second matrix
-* @param reference of the result matrix
-* @param number of rows in first matrix
-* @param number of columns in the first matrix
-* @param number of rows in the second matrix
-* @param number of columns in the second matrix
+* @param m1 const reference of first matrix
+* @param m2 const reference of second matrix
+* @param m3 reference of the result matrix
+* @param rows_m1 dst number of rows in first matrix
+* @param cols_m1 number of columns in the first matrix
+* @param rows_m2 dst number of rows in the second matrix
+* @param cols_m2 number of columns in the second matrix
 */
 void mull_parallel_transp_inner_prod_2d(const MyMatrix & m1, const MyMatrix & m2, MyMatrix& m3, const int rows_m1, const int cols_m1, const int rows_m2, const int cols_m2);
 
 
-/*
+/**
 * Transposes the source matrix and writes the results into the destination matrix
-* @param const reference to a source matrix
-* @param const reference to a destination matrix
-* @param number of rows
-* @param number of columns
+* @param src const reference to a source matrix
+* @param dst const reference to a destination matrix
+* @param rows number of rows
+* @param cols number of columns
 */
 void pptranspose(const MyMatrix& src, MyMatrix& dst, const int rows, const int cols);
 
-/*
+/**
 * Loads the file with the correct result and checks if the numbers match
-* @param const reference for the matrix that we want to validate
-* @param number of rows of the first matrix
-* @param number of cols of the first matrix
-* @param number of rows of the second matrix
-* @param number of cols of the second matrix
+* @param result const reference for the matrix that we want to validate
+* @param rows_m1 number of rows of the first matrix
+* @param cols_m1 number of cols of the first matrix
+* @param rows_m2 number of rows of the second matrix
+* @param cols_m2 number of cols of the second matrix
 * @returns true if the result is correct
 */
 bool validate_pp_results(const MyMatrix& result, int rows_m1, int cols_m1, int rows_m2, int cols_m2);
 
 
-/*
+/**
 * Saves the result Matrix at the specified location
-* @param const reference for a output filename
-* @param const reference for the result matrix
-* @param number of rows in the matrix
-* @param number of columns in the matrix
+* @param outFilename const reference for a output filename
+* @param res const reference for the result matrix
+* @param rows dst number of rows in the matrix
+* @param cols number of columns in the matrix
 */
 void save_pp_result(const string& outFilename, const MyMatrix& res, int rows, int cols);
 
@@ -367,33 +367,34 @@ void save_pp_result(const string& outFilename, const MyMatrix& res, int rows, in
 
 
 
-/*
+/**
 * An exception that inherits runtime_error and is a parent class to other matrix exceptions
 */
 struct PPMatrixException : public std::runtime_error {
-	/*
+	/**
 	*Constructor that recieves an error message and calls the parent constructor
-	* @param error message that will be displayed
+	* @param message error message that will be displayed
 	*/
 	PPMatrixException(const char* message) : runtime_error(message) {};
 };
 
-/*
+/**
 * A struct that inherits MatrixException and is thrown when dimensions are incompatible during matrix multiplication
 */
 struct PPIncompatibleDimensions : public PPMatrixException {
-	/*
+	/**
 	*Constructor that calls the parent constructor with a message when matrix dimensions are incompatible
 	*/
 	PPIncompatibleDimensions() : PPMatrixException("Inner dimensions must be the same!") {};
 };
 
-/*
+/**
 * A struct that inherits MatrixException and is thrown when data that is being loaded is invalid
 */
 struct PPInvalidData : public PPMatrixException {
-	/*
-	*Constructor that calls the parent constructor with a message when data you are trying to load is invalid
+	/**
+	* Constructor that calls the parent constructor with a message when data you are trying to load is invalid
+	* @param filename name of the file where data is invalid
 	*/
 	PPInvalidData(string filename) : PPMatrixException(("Unable to load matrix data from " + filename + "\nbecause the data is invalid!").c_str()) {};
 };

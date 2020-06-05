@@ -62,6 +62,7 @@ void mull_all_matrices(const std::vector<std::pair<int, int>>& matrix_sizes) {
 	}
 
 	print_result_table(matrix_sizes, average_result_times);
+	save_average_times_serial(matrix_sizes, average_result_times);
 }
 
 void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
@@ -91,6 +92,24 @@ void print_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, co
 	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
 
+}
+
+void save_average_times_serial(const std::vector<std::pair<int, int>>& matrix_sizes, const std::vector<double>& average_result_times)
+{
+	string outFilename = "../MultiplicationResults/timesSerial/AverageSerialMullTimes.txt";
+	ofstream out(outFilename);
+	for each (pair<int, int> var in matrix_sizes)
+	{
+		out << var.first << " ";
+	}
+	out << endl;
+	for each (double var in average_result_times)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	out.flush();
+	out.close();
 }
 
 bool mull_two_matrices(const string & inFilename1, const string & inFilename2, const string & outFilename, std::vector<double>& average_result_times)

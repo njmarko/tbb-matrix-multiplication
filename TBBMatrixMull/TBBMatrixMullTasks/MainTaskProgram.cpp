@@ -49,17 +49,17 @@ bool mull_two_task_matrices(const string & inputFile1, const string & inputFile2
 	int rows_m1 = 0;
 	int cols_m1 = 0;
 
-	load_data(inputFile1, m1, rows_m1, cols_m1);
+	load_data_tasks(inputFile1, m1, rows_m1, cols_m1);
 
 	if (rows_m1 < 10 && cols_m1 < 10)
-		print_matrix(m1, rows_m1, cols_m1);
+		print_matrix_tasks(m1, rows_m1, cols_m1);
 
 	MyMatrix m2;
 	int rows_m2 = 0;
 	int cols_m2 = 0;
-	load_data(inputFile2, m2, rows_m2, cols_m2);
+	load_data_tasks(inputFile2, m2, rows_m2, cols_m2);
 	if (rows_m2 < 10 && cols_m2 < 10)
-		print_matrix(m2, rows_m2, cols_m2);
+		print_matrix_tasks(m2, rows_m2, cols_m2);
 
 	MyMatrix m3;
 
@@ -106,7 +106,7 @@ bool mull_two_task_matrices(const string & inputFile1, const string & inputFile2
 		<< " : " << avg << "ms.\n";
 
 	if (rows_m1 < 10 && cols_m2 < 10)
-		print_matrix(m3, rows_m1, cols_m2);
+		print_matrix_tasks(m3, rows_m1, cols_m2);
 	cout << "Results are valid!\n";
 	average_result_times.emplace_back(avg);
 	save_task_results(outFilename, m3, rows_m1, cols_m2);
@@ -138,6 +138,7 @@ void mull_all_task_matrices(const std::vector<std::pair<int, int>>& matrix_sizes
 	}
 
 	print_task_result_table(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed);
+	save_average_times_tasks(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed);
 }
 
 void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, 
@@ -190,4 +191,33 @@ void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_size
 	cout << endl;
 	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
+}
+
+void save_average_times_tasks(const std::vector<std::pair<int, int>>& matrix_sizes, 
+	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed)
+{
+	string outFilename = "../MultiplicationResults/timesTasks/AverageTasksMullTimes.txt";
+	ofstream out(outFilename);
+	for each (pair<int, int> var in matrix_sizes)
+	{
+		out << var.first << " ";
+	}
+	out << endl;
+	for each (double var in avg_res_times_single_elem)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	for each (double var in avg_res_times_single_row)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	for each (double var in avg_res_times_distributed)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	out.flush();
+	out.close();
 }

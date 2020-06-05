@@ -1,0 +1,14 @@
+Za html dokumentaciju pokrenuti index.hmtl
+
+Za RichTextFormat otvoriti refman.rtf
+
+U programu su izmenjeni samo neki komentari, i to samo neke tehnikalnosti da bi 
+alat za generisanje doxygen mogao da generise ispravnu HTML i RTF dokumentaciju.
+
+Takodje su obrisani neki veliki testni slucajevi jer su zauzimali previse memorije.
+
+Postoje dve stranice u .docx i .pdf dokumentaciji koje je nemoguce ukloniti drugim
+alatima osim worda, kojeg trenutno ne posedujem. U stampanoj dokumentaciji su
+te dve stranice izostavljene. Razlog je to sto je template koji smo dobili za 
+dokumentaciju imao neke elemente koji nisu kompatibilni sa drugim alatima za
+obradu teksta, a to je primeceno tek nakon sto je celokupna dokumentacija napisana.

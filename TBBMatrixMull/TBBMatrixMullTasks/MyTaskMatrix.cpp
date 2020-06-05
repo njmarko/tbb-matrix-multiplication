@@ -1,6 +1,6 @@
 #include "MyTaskMatrix.h"
 
-bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
+bool load_data_tasks(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 {
 	std::ifstream fin;
 	fin.open(filename);
@@ -53,7 +53,7 @@ bool load_data(const std::string& filename, MyMatrix& m, int& rows, int& cols)
 }
 
 
-void print_matrix(const MyMatrix& m, const int rows, const int cols)
+void print_matrix_tasks(const MyMatrix& m, const int rows, const int cols)
 {
 	cout << "\nMatrix dim=" << rows << "x" << cols << endl;
 
@@ -101,7 +101,7 @@ bool valid_task_results(const MyMatrix & result, int rows_m1, int cols_m1, int r
 		to_string(rows_m1) + "x" + to_string(cols_m1) + "mull" +
 		to_string(rows_m2) + "x" + to_string(cols_m2) + ".txt";
 
-	load_data(validResFilename, valid_result, rows_res, cols_res);
+	load_data_tasks(validResFilename, valid_result, rows_res, cols_res);
 	if (rows_res != rows_m1 || cols_res != cols_m2)
 	{
 
@@ -131,4 +131,5 @@ bool save_task_results(const string & outFilename, const MyMatrix & res, int row
 	}
 	out.flush();
 	out.close();
+	return true;
 }
