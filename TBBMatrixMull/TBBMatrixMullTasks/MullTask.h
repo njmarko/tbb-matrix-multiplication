@@ -2,6 +2,8 @@
 
 #include <tbb\task.h>
 #include "MyTaskMatrix.h"
+#include <tbb\parallel_reduce.h>
+#include <tbb\parallel_for.h>
 
 using namespace std;
 using namespace tbb;
@@ -14,7 +16,8 @@ enum TaskType
 {
 	single_element=0,
 	signle_row,
-	distributed
+	distributed,
+	map_reduce
 };
 
 /**
@@ -163,4 +166,45 @@ private:
 	const int cols_m2;
 	int row_start;
 	int row_end;
+};
+
+
+/**
+* Task that will create one task per row
+* and that child task will then calculate the values for all the elements in the row by using map reduce implemented with tbb reduce
+*/
+class MapReduceSingleRowTask :public task
+{
+public:
+	MapReduceSingleRowTask(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3, const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2);
+	task* execute();
+
+private:
+	task_list all_tasks;
+	const MyMatrix& m1;
+	const MyMatrix& m2;
+	MyMatrix& m3;
+	const int rows_m1;
+	const int cols_m1;
+	const int rows_m2;
+	const int cols_m2;
+};
+
+/**
+* Task that will calculate all the values for a single row by using parallel map reduce implemented with tbb reduce
+*/
+class MapReduceSingleRow :public task {
+public:
+	MapReduceSingleRow(const MyMatrix & _m1, const MyMatrix & _m2, MyMatrix& _m3, const int _rows_m1, const int _cols_m1, const int _rows_m2, const int _cols_m2, int _a_row);
+	task* execute();
+private:
+	task_list col_tasks;
+	const MyMatrix& m1;
+	const MyMatrix& m2;
+	MyMatrix& m3;
+	const int rows_m1;
+	const int cols_m1;
+	const int rows_m2;
+	const int cols_m2;
+	int a_row;
 };

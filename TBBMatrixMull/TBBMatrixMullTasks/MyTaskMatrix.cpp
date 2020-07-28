@@ -49,6 +49,7 @@ bool load_data_tasks(const std::string& filename, MyMatrix& m, int& rows, int& c
 			throw TaskInvalidData(filename);
 		}
 	}
+	fin.close();
 	return true;
 }
 

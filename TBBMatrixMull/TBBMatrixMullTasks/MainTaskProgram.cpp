@@ -86,12 +86,17 @@ bool mull_two_task_matrices(const string & inputFile1, const string & inputFile2
 			MullDistributedTask& task = *new(task::allocate_root()) MullDistributedTask(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2);
 			task::spawn_root_and_wait(task);
 		}
+		else if (type == TaskType::map_reduce)
+		{
+			MapReduceSingleRowTask& task = *new(task::allocate_root()) MapReduceSingleRowTask(m1, m2_transposed, m3, rows_m1, cols_m1, rows_m2, cols_m2);
+			task::spawn_root_and_wait(task);
+		}
 		tick_count t2 = tick_count::now();
 		if (!valid_task_results(m3, rows_m1, cols_m1, rows_m2, cols_m2))
 		{
 			cout << "Invalid results for matrix multiplication of " <<
 				to_string(rows_m1) + "x" + to_string(cols_m1) + " and " +
-				to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices\n";
+				to_string(rows_m1) + "x" + to_string(cols_m1) << " matrices when performing " << taskTypeToStr(type) << " calculation.\n";
 			return false;
 		}
 
@@ -118,6 +123,7 @@ void mull_all_task_matrices(const std::vector<std::pair<int, int>>& matrix_sizes
 	std::vector<double> avg_res_times_single_elem;
 	std::vector<double> avg_res_times_single_row;
 	std::vector<double> avg_res_times_distributed;
+	std::vector<double> avg_res_times_map_reduce_single_row;
 
 	for each (pair<int, int> var in matrix_sizes)
 	{
@@ -135,14 +141,19 @@ void mull_all_task_matrices(const std::vector<std::pair<int, int>>& matrix_sizes
 			to_string(var.first) + "x" + to_string(var.second) + "mull" +
 			to_string(var.first) + "x" + to_string(var.second) + ".txt";
 		mull_two_task_matrices(inFilename1, inFilename2, outFilenameDistributed, avg_res_times_distributed, TaskType::distributed);
+		string outFilenameMapReduceSingleRow = "../MultiplicationResults/parallelMapReduceSingleRow/" +
+			to_string(var.first) + "x" + to_string(var.second) + "mull" +
+			to_string(var.first) + "x" + to_string(var.second) + ".txt";
+		mull_two_task_matrices(inFilename1, inFilename2, outFilenameMapReduceSingleRow, avg_res_times_map_reduce_single_row, TaskType::map_reduce);
 	}
 
-	print_task_result_table(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed);
-	save_average_times_tasks(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed);
+	print_task_result_table(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed, avg_res_times_map_reduce_single_row);
+	save_average_times_tasks(matrix_sizes, avg_res_times_single_elem, avg_res_times_single_row, avg_res_times_distributed, avg_res_times_map_reduce_single_row);
 }
 
 void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_sizes, 
-	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed)
+	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed,
+	const std::vector<double>& avg_res_times_map_reduce_single_row)
 {
 	//std::stringstream ss;
 	cout << endl;
@@ -191,10 +202,22 @@ void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_size
 	cout << endl;
 	cout << string(20 + 10 * matrix_sizes.size(), '-');
 	cout << endl;
+
+	cout.width(20);
+	cout << "Tasks Map Reduce Single Row";
+	for each (double var in avg_res_times_map_reduce_single_row)
+	{
+		cout.width(10);
+		cout << var;
+	}
+	cout << endl;
+	cout << string(20 + 10 * matrix_sizes.size(), '-');
+	cout << endl;
 }
 
 void save_average_times_tasks(const std::vector<std::pair<int, int>>& matrix_sizes, 
-	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed)
+	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed, 
+	const std::vector<double>& avg_res_times_map_reduce_single_row)
 {
 	string outFilename = "../MultiplicationResults/timesTasks/AverageTasksMullTimes.txt";
 	ofstream out(outFilename);
@@ -214,6 +237,11 @@ void save_average_times_tasks(const std::vector<std::pair<int, int>>& matrix_siz
 	}
 	out << endl;
 	for each (double var in avg_res_times_distributed)
+	{
+		out << var << " ";
+	}
+	out << endl;
+	for each (double var in avg_res_times_map_reduce_single_row)
 	{
 		out << var << " ";
 	}

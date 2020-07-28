@@ -49,9 +49,11 @@ void mull_all_task_matrices(const std::vector<std::pair<int, int>>& matrix_sizes
 * @param avg_res_times_single_elem const reference to a vector that holds average result times for apropriate matrix size for siglne element function
 * @param avg_res_times_single_row const reference to a vector that holds average result times for apropriate matrix size for single row function
 * @param avg_res_times_distributed const reference to a vector that holds average result times for apropriate matrix size for distributed rows function
+* @param const std::vector<double>& avg_res_times_map_reduce_single_row const reference to a vector that holds average result times for apropriate matrix size for map reduce single row function
 */
 void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_sizes,
-	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed);
+	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed,
+	const std::vector<double>& avg_res_times_map_reduce_single_row);
 
 
 
@@ -61,6 +63,8 @@ void print_task_result_table(const std::vector<std::pair<int, int>>& matrix_size
 * @param avg_res_times_single_elem const reference to a vector that holds average result times for apropriate matrix size for siglne element function
 * @param avg_res_times_single_row const reference to a vector that holds average result times for apropriate matrix size for single row function
 * @param avg_res_times_distributed const reference to a vector that holds average result times for apropriate matrix size for distributed rows function
+* @param const std::vector<double>& avg_res_times_map_reduce_single_row const reference to a vector that holds average result times for apropriate matrix size for map reduce single row function
 */
 void save_average_times_tasks(const std::vector<std::pair<int, int>>& matrix_sizes,
-	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed);
+	const std::vector<double>& avg_res_times_single_elem, const std::vector<double>& avg_res_times_single_row, const std::vector<double>& avg_res_times_distributed,
+	const std::vector<double>& avg_res_times_map_reduce_single_row);
